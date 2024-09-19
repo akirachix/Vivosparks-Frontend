@@ -1,11 +1,11 @@
-import Sidebar from "./components/Sidebar";
-
+import Layout from "./components/Layout";
 export default function Home() {
   return (
-    <div style={{ display: 'flex' }}>
-      <Sidebar />
-      <div style={{ marginLeft: '250px', padding: '20px', width: '100%' }}>
-      </div>
+    <div>
+<Layout>
+<div>
+</div>
+</Layout>
     </div>
   );
 }

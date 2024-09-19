@@ -21,6 +21,6 @@
       "a/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/fetchInvestmentSimulation.ts"],
   "exclude": ["node_modules"]
 }

@@ -4,12 +4,17 @@ import { IoHome } from "react-icons/io5";
 import { CiBank } from "react-icons/ci";
 import { FaPiggyBank } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
-
+import Image from 'next/image';
 const Sidebar = () => {
   return (
     <div className="w-72 h-screen bg-[#00265B] text-white p-5 fixed">
       <div className="mb-5 text-center">
-        <img src="/images/investika-logo.png" alt="Logo" className="max-w-xs mb-10 mx-auto"/>
+        <Image
+        src={"/investika-logo.png"}
+        alt='logo'
+        width={300}
+        height={200}
+        />
       </div>
       <nav>
         <ul className="space-y-12 font-nunito">

@@ -10,19 +10,15 @@ const UserManagement: React.FC = () => {
   const { users, loading: loadingUsers, error: errorUsers } = useUsers(); 
   const { simulations, loading: loadingSimulations, error: errorSimulations } = useSimulations();
 
-  
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10; 
-
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
- 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
- 
   const calculateTotalVirtualMoney = (virtualMoneyArray: { amount: number }[]) => {
     return virtualMoneyArray.reduce((total, item) => {
       return total + (isNaN(item.amount) ? 0 : item.amount);
@@ -31,52 +27,52 @@ const UserManagement: React.FC = () => {
 
   return (
     <Layout>
-    <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header with Stats */}
-      <div className="flex flex-wrap justify-between gap-6 mb-8">
-        <InfoCard
-          value={users.length}
-          title="Total Users"
-          loading={loadingUsers}
-          error={errorUsers}
-        />
-        <InfoCard         
-          value={calculateTotalVirtualMoney(virtualMoney)}
-          title="Total Virtual Money"
-          loading={loadingMoney}
-          error={errorMoney}
-        />
-        <InfoCard
-          value={simulations.length}
-          title="Total Simulations"
-          loading={loadingSimulations}
-          error={errorSimulations}
-        />
-      </div>
+      <div className="p-6 bg-gray-100 min-h-screen">
+        {/* Header with Stats */}
+        <div className="flex flex-wrap justify-between gap-6 mb-8">
+          <InfoCard
+            value={users.length}
+            title="Total Users"
+            loading={loadingUsers}
+            error={errorUsers}
+          />
+          <InfoCard         
+            value={calculateTotalVirtualMoney(virtualMoney)}
+            title="Total Virtual Money"
+            loading={loadingMoney}
+            error={errorMoney}
+          />
+          <InfoCard
+            value={simulations.length}
+            title="Total Simulations"
+            loading={loadingSimulations}
+            error={errorSimulations}
+          />
+        </div>
 
-      {/* User Management Table */}
-      <div className="bg-white p-6 shadow rounded-lg">
-        <h2 className="text-4xl font-bold mb-4 text-center">User Management</h2>
-        {loadingUsers ? (
-          <p className="text-center">Loading users...</p>
-        ) : errorUsers ? (
-          <p className="text-center text-red-500">Error loading users: {errorUsers}</p>
-        ) : users.length > 0 ? (
-          <>
-            <UserTable users={currentUsers} />
-            <Pagination
-              usersPerPage={usersPerPage}
-              totalUsers={users.length}
-              paginate={paginate}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </>
-        ) : (
-          <p className="text-center">No users found.</p>
-        )}
+        {/* User Management Table */}
+        <div className="bg-white p-6 shadow rounded-lg">
+          <h2 className="text-4xl font-bold mb-4 text-center">User Management</h2>
+          {loadingUsers ? (
+            <p className="text-center">Loading users...</p>
+          ) : errorUsers ? (
+            <p className="text-center text-red-500">Error loading users: {errorUsers}</p>
+          ) : users.length > 0 ? (
+            <>
+              <UserTable users={currentUsers} />
+              <Pagination
+                usersPerPage={usersPerPage}
+                totalUsers={users.length}
+                paginate={paginate}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </>
+          ) : (
+            <p className="text-center">No users found.</p>
+          )}
+        </div>
       </div>
-    </div>
     </Layout>
   );
 };
@@ -129,7 +125,6 @@ const UserTable: React.FC<{ users: CombinedUser[] }> = ({ users }) => (
   </table>
 );
 
-
 const Pagination: React.FC<{
   usersPerPage: number;
   totalUsers: number;
@@ -158,7 +153,6 @@ const Pagination: React.FC<{
   return (
     <nav className="flex justify-center mt-4">
       <ul className="flex space-x-2">
-     
         <li>
           <button
             onClick={handlePrevious}
@@ -168,7 +162,6 @@ const Pagination: React.FC<{
             &laquo; Back
           </button>
         </li>
-    
         {pageNumbers.map(number => (
           <li key={number}>
             <button
@@ -179,7 +172,6 @@ const Pagination: React.FC<{
             </button>
           </li>
         ))}
-     
         <li>
           <button
             onClick={handleNext}

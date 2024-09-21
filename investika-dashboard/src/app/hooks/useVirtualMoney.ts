@@ -11,10 +11,14 @@ export const useVirtualMoney = () => {
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchVirtualMoney(); 
+        const data = await fetchVirtualMoney();
         setVirtualMoney(data);
-      } catch (err: any) {
-        setError(err.message || 'Error fetching virtual money data');
+      } catch (err: unknown) { 
+        if (err instanceof Error) { 
+          setError(err.message);
+        } else {
+          setError('Error fetching virtual money data');
+        }
       } finally {
         setLoading(false);
       }

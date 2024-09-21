@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { IoHome } from "react-icons/io5";
 import { CiBank } from "react-icons/ci";
 import { FaPiggyBank } from "react-icons/fa";
-import { IoIosLogOut } from "react-icons/io";
 
 type SidebarItemProps = {
   Icon: React.ElementType;  
@@ -17,12 +16,16 @@ const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
 
- 
+  // State to force component rendering on client-side after initial load
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    // Set default path to "/user-tracking" if the current pathname is "/"
+    if (pathname === '/') {
+      router.push('/user-tracking');
+    }
+  }, [pathname, router]);
 
   const SidebarItem: React.FC<SidebarItemProps> = ({ Icon, label, path }) => {
     const isActive = pathname === path;
@@ -37,7 +40,7 @@ const Sidebar = () => {
     );
   };
 
-  if (!mounted) return null; 
+  if (!mounted) return null; // Prevents rendering until the component is mounted
 
   return (
     <div className="w-72 h-screen bg-[#00265B] text-white p-5 fixed flex flex-col justify-between">

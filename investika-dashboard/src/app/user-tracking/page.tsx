@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { CombinedUser, useUsers } from 'a/app/hooks/useUsers'; 
 import { useSimulations } from 'a/app/hooks/useSimulation';
 import { useVirtualMoney } from 'a/app/hooks/useVirtualMoney';
+import Layout from '../components/Layout';
 
 const UserManagement: React.FC = () => {
   const { virtualMoney, loading: loadingMoney, error: errorMoney } = useVirtualMoney();
@@ -29,6 +30,7 @@ const UserManagement: React.FC = () => {
   };
 
   return (
+    <Layout>
     <div className="p-6 bg-gray-100 min-h-screen">
       {/* Header with Stats */}
       <div className="flex flex-wrap justify-between gap-6 mb-8">
@@ -75,6 +77,7 @@ const UserManagement: React.FC = () => {
         )}
       </div>
     </div>
+    </Layout>
   );
 };
 

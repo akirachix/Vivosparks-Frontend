@@ -1,4 +1,4 @@
-
+"use client";
 import Link from 'next/link';
 import { IoHome } from "react-icons/io5";
 import { CiBank } from "react-icons/ci";
@@ -21,7 +21,7 @@ const Sidebar = () => {
           <li>
             <div className="flex items-center">
               <IoHome className="mr-4 text-2xl -mt-2"/>
-              <Link href="/user-tracking-report" legacyBehavior>
+              <Link href="/UserTracking" legacyBehavior>
                 <a className="text-lg font-bold hover:text-[#F8BD00]">User Tracking Report</a>
               </Link>
             </div>

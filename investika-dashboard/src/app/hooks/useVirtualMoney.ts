@@ -1,11 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchVirtualMoney } from '../../../utils/fetchVirtualMoney';
-
-type VirtualMoney = {
-  id: number;
-  amount: number;
-  currency: string;
-};
+import { fetchVirtualMoney, VirtualMoney } from '../../../utils/fetchVirtualMoney'; 
 
 export const useVirtualMoney = () => {
   const [virtualMoney, setVirtualMoney] = useState<VirtualMoney[]>([]);
@@ -17,10 +11,10 @@ export const useVirtualMoney = () => {
       setLoading(true);
       setError(null);
       try {
-        const fetchedVirtualMoney: VirtualMoney[] = await fetchVirtualMoney();
-        setVirtualMoney(fetchedVirtualMoney);
-      } catch (err) {
-        setError('Error fetching virtual money data');
+        const data = await fetchVirtualMoney(); 
+        setVirtualMoney(data);
+      } catch (err: any) {
+        setError(err.message || 'Error fetching virtual money data');
       } finally {
         setLoading(false);
       }
@@ -29,9 +23,5 @@ export const useVirtualMoney = () => {
     loadVirtualMoney();
   }, []);
 
-  return {
-    virtualMoney,
-    loading,
-    error,
-  };
+  return { virtualMoney, loading, error };
 };

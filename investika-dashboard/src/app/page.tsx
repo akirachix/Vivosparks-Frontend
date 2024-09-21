@@ -1,13 +1,11 @@
-// Correct example for index.tsx or index.js
-import React from 'react';
-
-import UserManagement from './components/UserTracking';
-const HomePage = () => {
+import Layout from "./components/Layout";
+export default function Home() {
   return (
     <div>
-    <UserManagement/>
+<Layout>
+<div>
+</div>
+</Layout>
     </div>
   );
-};
-
-export default HomePage;
+}

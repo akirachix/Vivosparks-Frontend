@@ -1,46 +1,60 @@
 import { useState, useEffect } from 'react';
-import { fetchUsers } from '../../../utils/fetchUsers';
+import { fetchUsers, User } from '../../../utils/fetchUsers';
+import { fetchVirtualMoney, VirtualMoney } from '../../../utils/fetchVirtualMoney';
 
-type User = {
-  id: number;
-  username: string;
-  email: string;
-  virtualmoney: string;
-  location: string;
-};
+export interface CombinedUser extends User {
+  virtualmoney: number;
+}
 
 export const useUsers = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<CombinedUser[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loadUsers = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const fetchedUsers: User[] = await fetchUsers();
-      setUsers(fetchedUsers);
-    } catch (err) {
-      setError('Error fetching users');
-    } finally {
-      setLoading(false);
-    }
+  const combineUsersWithVirtualMoney = (fetchedUsers: User[], virtualMoney: VirtualMoney[]): CombinedUser[] => {
+
+    console.log({fetchedUsers, virtualMoney});
+    
+    return fetchedUsers.map(user => {
+      const money = virtualMoney.find(v => v.user === user.user_id);
+      return { ...user, virtualmoney: money ? money.amount : 0 };
+    });
   };
 
-  // Load users on initial render
   useEffect(() => {
-    loadUsers();
-  }, []);
+    const loadData = async () => { 
+      setLoading(true);
+      setError(null);
 
-  // Function to manually refresh users
-  const refreshUsers = () => {
-    loadUsers();
-  };
+      try {
+     
+        const virtualMoney: VirtualMoney[] = await fetchVirtualMoney();
+        
+     
+        if (virtualMoney.length > 0) {
+       
+          const fetchedUsers: User[] = await fetchUsers();
+          const combinedUsers = combineUsersWithVirtualMoney(fetchedUsers, virtualMoney);
+          
+ 
+          setUsers(combinedUsers);
+        } else {
+    
+          setError('Virtual money data is unavailable or empty.');
+        }
+      } catch (err: any) {
+        setError(err.message || 'Error fetching data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   return {
     users,
     loading,
     error,
-    refreshUsers, // Expose refresh function
   };
 };

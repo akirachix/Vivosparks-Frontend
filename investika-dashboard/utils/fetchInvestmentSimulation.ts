@@ -1,15 +1,26 @@
-// utils/fetchInvestmentSimulations.ts
-export const fetchSimulations = async () => {
-    try {
-      const response = await fetch('/api/investment-simulations');
-      if (!response.ok) {
-        throw new Error('Failed to fetch simulations');
-      }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+// Define a type to describe the structure of the simulation data
+export interface Simulation {
+  id: number;
+  amount_invested: number
+  outcome:string
+}
+ 
   
+
+export const fetchSimulations = async (): Promise<Simulation[]> => {
+  try {
+    
+    const response = await fetch('/api/investment-simulation');
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch simulations. Status: ${response.status} - ${response.statusText}`);
+    }
+
+    const data: Simulation[] = await response.json() as Simulation[];
+    
+    return data;
+  } catch (error: any) { 
+    console.error('Error fetching simulations:', error.message || error);
+    throw error;
+  }
+};

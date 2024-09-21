@@ -21,6 +21,6 @@
       "a/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/fetchInvestmentSimulation.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/fetchInvestmentSimulation.ts", "src/app/components/UserTracking/page.tsx"],
   "exclude": ["node_modules"]
 }

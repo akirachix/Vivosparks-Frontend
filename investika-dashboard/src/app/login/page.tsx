@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -44,7 +45,7 @@ const Login = () => {
   return (
     <div className="flex h-screen">
       <div className="bg-white w-1/2 flex flex-col items-center justify-center">
-        <img src="./image/logo.png" alt="Investika Logo" className="w-4/5" />
+        <Image src="./image/logo.png" alt="Investika Logo" className="w-4/5" />
         <p className="text-black text-xl text-center mb-64">
           Empowering Your Financial Journey<br />
           Financial learning through investment simulations.

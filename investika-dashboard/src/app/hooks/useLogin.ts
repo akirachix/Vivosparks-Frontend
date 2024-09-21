@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { userLogin as loginAPI } from '../utils/userLogin';
 
-const useLogin = (url = 'api/login') => {
+const useLogin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');

@@ -1,16 +1,16 @@
-
+import Image from 'next/image';
 import Link from 'next/link';
 import { IoHome } from "react-icons/io5";
 import { CiBank } from "react-icons/ci";
 import { FaPiggyBank } from "react-icons/fa";
 import { IoIosLogOut } from "react-icons/io";
-import Image from 'next/image';
+
 const Sidebar = () => {
   return (
     <div className="w-72 h-screen bg-[#00265B] text-white p-5 fixed">
       <div className="mb-5 text-center">
         <Image
-        src={"/investika-logo.png"}
+        src={"/image/logo.png"}
         alt='logo'
         width={300}
         height={200}
@@ -21,7 +21,7 @@ const Sidebar = () => {
           <li>
             <div className="flex items-center">
               <IoHome className="mr-4 text-2xl -mt-2"/>
-              <Link href="/user-tracking-report" legacyBehavior>
+              <Link href="/user-tracking" legacyBehavior>
                 <a className="text-lg font-bold hover:text-[#F8BD00]">User Tracking Report</a>
               </Link>
             </div>
@@ -53,6 +53,4 @@ const Sidebar = () => {
     </div>
   );
 };
-
 export default Sidebar;
-

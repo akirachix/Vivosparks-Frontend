@@ -21,7 +21,7 @@ const Sidebar = () => {
           <li>
             <div className="flex items-center">
               <IoHome className="mr-4 text-2xl -mt-2"/>
-              <Link href="/UserTracking" legacyBehavior>
+              <Link href="/user-tracking" legacyBehavior>
                 <a className="text-lg font-bold hover:text-[#F8BD00]">User Tracking Report</a>
               </Link>
             </div>

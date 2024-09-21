@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { CombinedUser, useUsers } from 'a/app/hooks/useUsers'; 
 import { useSimulations } from 'a/app/hooks/useSimulation';
 import { useVirtualMoney } from 'a/app/hooks/useVirtualMoney';
@@ -12,6 +12,14 @@ const UserManagement: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10; 
+
+  useEffect(() => {
+    console.log('UserManagement component mounted or updated');
+
+    return () => {
+      console.log('UserManagement component will unmount');
+    };
+  }, []); 
 
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
@@ -28,7 +36,6 @@ const UserManagement: React.FC = () => {
   return (
     <Layout>
       <div className="p-6 bg-gray-100 min-h-screen">
-        {/* Header with Stats */}
         <div className="flex flex-wrap justify-between gap-6 mb-8">
           <InfoCard
             value={users.length}
@@ -50,7 +57,6 @@ const UserManagement: React.FC = () => {
           />
         </div>
 
-        {/* User Management Table */}
         <div className="bg-white p-6 shadow rounded-lg">
           <h2 className="text-4xl font-bold mb-4 text-center">User Management</h2>
           {loadingUsers ? (
@@ -191,4 +197,4 @@ export default UserManagement;
 const formatToTwoDecimals = (number: number): string => {
   if (isNaN(number)) return "0.00"; 
   return number.toFixed(2); 
-};
+}

@@ -9,6 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div>
         <Sidebar />
       </div>
+      
       <div className="flex-grow ">
         {children}
        

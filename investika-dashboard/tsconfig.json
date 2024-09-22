@@ -20,7 +20,10 @@
     "paths": {
       "a/*": ["./src/*"]
     }
+ 
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "utils/fetchInvestmentSimulation.ts", "src/app/components/UserTracking/page.tsx"],
+
+  "include": ["next-env.d.ts","src/**/*", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
+

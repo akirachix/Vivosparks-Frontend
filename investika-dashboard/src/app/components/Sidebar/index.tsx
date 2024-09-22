@@ -23,7 +23,7 @@ const Sidebar = () => {
     setMounted(true);
     // Set default path to "/user-tracking" if the current pathname is "/"
     if (pathname === '/') {
-      router.push('/user-tracking');
+      router.push('/homepage');
     }
   }, [pathname, router]);
 

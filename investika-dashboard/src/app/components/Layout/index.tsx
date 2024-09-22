@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Sidebar from '../Sidebar';
-import MarketsPage from 'a/app/pages/markets/markets';
+import MarketsPage from 'a/app/components/Market';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchMarkets } from '../utils/fetchMarket';
+import { fetchMarkets } from '../../../utils/fetchMarket';
 
 export const useMarkets = () => {
   const [markets, setMarkets] = useState([]);
@@ -8,6 +8,7 @@ export const useMarkets = () => {
   useEffect(() => {
     const getMarkets = async () => {
       const data = await fetchMarkets();
+      console.log('Markets data in hook:', data);
       setMarkets(data);
       setLoading(false);
     };

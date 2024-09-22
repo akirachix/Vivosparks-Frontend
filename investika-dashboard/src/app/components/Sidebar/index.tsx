@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { IoHome } from "react-icons/io5";
 import { CiBank } from "react-icons/ci";
 import { FaPiggyBank } from "react-icons/fa";
-import { IoIosLogOut } from "react-icons/io";
 import Image from 'next/image';
 const Sidebar = () => {
   return (
@@ -44,12 +43,6 @@ const Sidebar = () => {
           </li>
         </ul>
       </nav>
-      <div className="mt-96 ml-7 flex items-center">
-        <IoIosLogOut className="mr-4 text-2xl"/>
-        <Link href="/logout" legacyBehavior>
-          <a className="text-lg font-bold hover:text-[#F8BD00]">Logout</a>
-        </Link>
-      </div>
     </div>
   );
 };

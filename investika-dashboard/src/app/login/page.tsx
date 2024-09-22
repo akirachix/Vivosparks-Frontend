@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { FaLock, FaUser } from 'react-icons/fa';
-import { userLogin } from '../utils/userLogin';
+import { userLogin } from '../../../utils/userLogin';
 
 // Validation schema
 const loginSchema = yup.object().shape({

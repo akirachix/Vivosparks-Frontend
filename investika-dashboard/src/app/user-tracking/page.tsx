@@ -10,12 +10,7 @@ const UserManagement: React.FC = () => {
   const { simulations, loading: loadingSimulations, error: errorSimulations } = useSimulations();
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
-  useEffect(() => {
-    console.log('UserManagement component mounted or updated');
-    return () => {
-      console.log('UserManagement component will unmount');
-    };
-  }, []);
+
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);

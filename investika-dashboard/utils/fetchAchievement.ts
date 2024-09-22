@@ -9,9 +9,7 @@ export const fetchAchievement = async (): Promise<Achievements[]> => {
   try {
     const response = await fetch('/api/achievements');
 
-    // Log the entire response for debugging
-    console.log("API Response: ", response);
-
+    
     if (!response.ok) {
       throw new Error(`Failed to fetch achievements. Status: ${response.status} - ${response.statusText}`);
     }

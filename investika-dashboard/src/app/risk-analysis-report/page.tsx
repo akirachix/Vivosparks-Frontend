@@ -13,12 +13,6 @@ const AchievementManagement: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const achievementsPerPage = 10;
 
-  useEffect(() => {
-    console.log('Achievements:', achievements);
-    console.log('Loading Achievements:', loadingAchievements);
-    console.log('Error Achievements:', errorAchievements);
-  }, [achievements, loadingAchievements, errorAchievements]);
-
   const indexOfLastAchievement = currentPage * achievementsPerPage;
   const indexOfFirstAchievement = indexOfLastAchievement - achievementsPerPage;
   const currentAchievements = achievements.slice(indexOfFirstAchievement, indexOfLastAchievement);

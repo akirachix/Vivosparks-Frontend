@@ -11,13 +11,16 @@ export const useAchievements = () => {
       setLoading(true);
       setError(null);
       try {
-    
         const fetchedAchievements: Achievements[] = await fetchAchievement(); 
-
         setAchievements(fetchedAchievements);
-      } catch (err: any) { 
-        console.error('Error fetching simulations:', err.message || err); 
-        setError(err.message || 'Error fetching chievements');
+      } catch (err) {
+        if (err instanceof Error) {
+          console.error('Error fetching achievements:', err.message);
+          setError(err.message);
+        } else {
+          console.error('Unexpected error fetching achievements:', err);
+          setError('Unexpected error occurred');
+        }
       } finally {
         setLoading(false);
       }

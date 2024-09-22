@@ -2,6 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const baseUrl = process.env.BASE_URL;
 
+interface LoginRequestBody {
+  username: string;
+  password: string;
+}
+
 export async function POST(request: NextRequest) {
   if (!baseUrl) {
     console.error('BASE_URL environment variable is not set.');
@@ -12,7 +17,8 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { username, password } = await request.json();
+    const { username, password } = await request.json() as LoginRequestBody;
+
     if (!username || !password) {
       console.error('Validation failed: Missing username or password');
       return NextResponse.json(
@@ -21,7 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${baseUrl}/auth/login/`, { 
+    const response = await fetch(`${baseUrl}/auth/login/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,9 +40,9 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       try {
-        const errorData = textResponse
+        const errorData = textResponse;
         return NextResponse.json(
-          { error: errorData || 'Login failed. Invalid credentials.' }, 
+          { error: errorData || 'Login failed. Invalid credentials.' },
           { status: response.status }
         );
       } catch (e) {
@@ -48,12 +54,13 @@ export async function POST(request: NextRequest) {
     }
 
     const result = JSON.parse(textResponse);
-    
     return NextResponse.json(result, { status: 200 });
 
   } catch (error) {
+    // Handle unexpected errors
+    console.error('Unexpected error:', error);
     return NextResponse.json(
-      { error: 'An error occurred. Please try again later.' }, 
+      { error: 'An error occurred. Please try again later.' },
       { status: 500 }
     );
   }

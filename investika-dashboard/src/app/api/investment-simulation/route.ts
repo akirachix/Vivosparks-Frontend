@@ -2,11 +2,15 @@ import { NextResponse } from 'next/server';
 
 const baseUrl = process.env.BASE_URL;
 
-if (!baseUrl) {
-  throw new Error('BASE_URL environment variable is not defined');
-}
-
 export async function GET() {
+  if (!baseUrl) {
+    console.error('BASE_URL environment variable is not defined');
+    return NextResponse.json(
+      { error: 'BASE_URL environment variable is not defined' },
+      { status: 500 }
+    );
+  }
+
   try {
     const response = await fetch(`${baseUrl}/api/investment-simulations/`);
 
@@ -17,7 +21,7 @@ export async function GET() {
     const simulations = await response.json();
 
     return NextResponse.json(simulations);
-  } catch (error: unknown) { 
+  } catch (error: unknown) {
     if (error instanceof Error) {
       console.error('Error fetching simulations:', error.message);
       return NextResponse.json({ error: error.message }, { status: 500 });

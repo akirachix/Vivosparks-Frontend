@@ -1,4 +1,3 @@
-// Define a type to describe the structure of the simulation data
 export interface Simulation {
   id: number;
   amount_invested: number

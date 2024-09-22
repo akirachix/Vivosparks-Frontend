@@ -12,9 +12,8 @@ export const useUsers = () => {
   const [error, setError] = useState<string | null>(null);
 
   const combineUsersWithVirtualMoney = (fetchedUsers: User[], virtualMoney: VirtualMoney[]): CombinedUser[] => {
+    console.log({ fetchedUsers, virtualMoney });
 
-    console.log({fetchedUsers, virtualMoney});
-    
     return fetchedUsers.map(user => {
       const money = virtualMoney.find(v => v.user === user.user_id);
       return { ...user, virtualmoney: money ? money.amount : 0 };
@@ -22,28 +21,26 @@ export const useUsers = () => {
   };
 
   useEffect(() => {
-    const loadData = async () => { 
+    const loadData = async () => {
       setLoading(true);
       setError(null);
 
       try {
-     
         const virtualMoney: VirtualMoney[] = await fetchVirtualMoney();
-        
-     
+
         if (virtualMoney.length > 0) {
-       
           const fetchedUsers: User[] = await fetchUsers();
           const combinedUsers = combineUsersWithVirtualMoney(fetchedUsers, virtualMoney);
-          
- 
           setUsers(combinedUsers);
         } else {
-    
           setError('Virtual money data is unavailable or empty.');
         }
-      } catch (err: any) {
-        setError(err.message || 'Error fetching data');
+      } catch (err: unknown) { 
+        if (err instanceof Error) { 
+          setError(err.message);
+        } else {
+          setError('Error fetching data');
+        }
       } finally {
         setLoading(false);
       }

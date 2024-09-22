@@ -1,31 +1,35 @@
 "use client";
-
-import { CombinedUser, useUsers } from 'a/app/hooks/useUsers';
+import React, { useState } from 'react'; // Removed useEffect
+import { useAchievements } from 'a/app/hooks/useAchievements';
+import { useUsers } from 'a/app/hooks/useUsers';
 import { useSimulations } from 'a/app/hooks/useSimulation';
-import { useVirtualMoney } from 'a/app/hooks/useVirtualMoney';
 import Layout from '../component/Layout';
-import { useState } from 'react';
+import { Achievements } from '../../../utils/fetchAchievement';
 
-const UserManagement: React.FC = () => {
-  const { virtualMoney, loading: loadingMoney, error: errorMoney } = useVirtualMoney();
+const AchievementManagement: React.FC = () => {
+  const { achievements, loading: loadingAchievements, error: errorAchievements } = useAchievements();
   const { users, loading: loadingUsers, error: errorUsers } = useUsers();
   const { simulations, loading: loadingSimulations, error: errorSimulations } = useSimulations();
+  
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
+  const achievementsPerPage = 10;
 
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const indexOfLastAchievement = currentPage * achievementsPerPage;
+  const indexOfFirstAchievement = indexOfLastAchievement - achievementsPerPage;
+  const currentAchievements = achievements.slice(indexOfFirstAchievement, indexOfLastAchievement);
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  const calculateTotalVirtualMoney = (virtualMoneyArray: { amount: number }[]) => {
-    return virtualMoneyArray.reduce((total, item) => {
-      return total + (isNaN(item.amount) ? 0 : item.amount);
-    }, 0);
-  };
+
   return (
     <Layout>
       <div className="p-6 bg-gray-100 min-h-screen">
         <div className="flex flex-wrap justify-between gap-6 mb-8">
+          <InfoCard
+            value={simulations.length}
+            title="Total Simulations"
+            loading={loadingSimulations}
+            error={errorSimulations}
+          />
           <InfoCard
             value={users.length}
             title="Total Users"
@@ -33,43 +37,41 @@ const UserManagement: React.FC = () => {
             error={errorUsers}
           />
           <InfoCard
-            value={calculateTotalVirtualMoney(virtualMoney)}
-            title="Total Virtual Money"
-            loading={loadingMoney}
-            error={errorMoney}
-          />
-          <InfoCard
-            value={simulations.length}
-            title="Total Simulations"
-            loading={loadingSimulations}
-            error={errorSimulations}
+            value={achievements.length}
+            title="Total Achievements"
+            loading={loadingAchievements}
+            error={errorAchievements}
           />
         </div>
         <div className="bg-white p-6 shadow rounded-lg">
-          <h2 className="text-4xl font-bold mb-4 text-center">User Management</h2>
-          {loadingUsers ? (
-            <p className="text-center">Loading users...</p>
-          ) : errorUsers ? (
-            <p className="text-center text-red-500">Error loading users: {errorUsers}</p>
-          ) : users.length > 0 ? (
+          <h2 className="text-4xl font-bold mb-4 text-center">Achievement Management</h2>
+          {loadingAchievements ? (
+            <p className="text-center">Loading achievements...</p>
+          ) : errorAchievements ? (
+            <div className="text-center text-red-500">
+              <p>Error loading achievements: {errorAchievements}</p>
+              <p>Please check the console for more details.</p>
+            </div>
+          ) : achievements.length > 0 ? (
             <>
-              <UserTable users={currentUsers} />
+              <AchievementTable achievements={currentAchievements} />
               <Pagination
-                usersPerPage={usersPerPage}
-                totalUsers={users.length}
+                itemsPerPage={achievementsPerPage}
+                totalItems={achievements.length}
                 paginate={paginate}
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
               />
             </>
           ) : (
-            <p className="text-center">No users found.</p>
+            <p className="text-center">No achievements found. Please check the console for more information.</p>
           )}
         </div>
       </div>
     </Layout>
   );
 };
+
 const InfoCard: React.FC<{
   title: string;
   value: number | string;
@@ -89,54 +91,57 @@ const InfoCard: React.FC<{
     )}
   </div>
 );
-const UserTable: React.FC<{ users: CombinedUser[] }> = ({ users }) => (
+
+const AchievementTable: React.FC<{ achievements: Achievements[] }> = ({ achievements }) => (
   <table className="min-w-full table-auto">
     <thead className="bg-gray-300 text-gray-800 text-2xl">
       <tr>
-        <th className="px-4 py-3 text-xl">Username</th>
-        <th className="px-4 py-3 text-xl">Email</th>
-        <th className="px-4 py-3 text-xl">Virtual Money Balance</th>
-        <th className="px-4 py-4 text-xl">Location</th>
+        <th className="px-4 py-3 text-xl">Id</th>
+        <th className="px-4 py-3 text-xl">Title</th>
+        <th className="px-4 py-3 text-xl">Reward Type</th>
+        <th className="px-4 py-3 text-xl">Date Achieved</th>
       </tr>
     </thead>
     <tbody className="text-xl">
-      {users.map((user, index) => (
+      {achievements.map((achievement, index) => (
         <tr
-          key={user.user_id}
+          key={achievement.id}
           className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-300'} hover:bg-blue-200`}
         >
-          <td className="px-4 py-3 text-center text-gray-800">{user.username}</td>
-          <td className="px-4 py-3 text-center text-gray-800">{user.email}</td>
-          <td className="px-4 py-3 text-center text-gray-800">
-            {formatToTwoDecimals(user.virtualmoney)}
-          </td>
-          <td className="px-4 py-3 text-center text-gray-800">{user.location}</td>
+          <td className="px-4 py-3 text-center text-gray-800">{achievement.id}</td>
+          <td className="px-4 py-3 text-center text-gray-800">{achievement.title}</td>
+          <td className="px-4 py-3 text-center text-gray-800">{achievement.reward_type}</td>
+          <td className="px-4 py-3 text-center text-gray-800">{achievement.date_achieved}</td>
         </tr>
       ))}
     </tbody>
   </table>
 );
+
 const Pagination: React.FC<{
-  usersPerPage: number;
-  totalUsers: number;
+  itemsPerPage: number;
+  totalItems: number;
   paginate: (pageNumber: number) => void;
   currentPage: number;
   setCurrentPage: (pageNumber: number) => void;
-}> = ({ usersPerPage, totalUsers, paginate, currentPage, setCurrentPage }) => {
+}> = ({ itemsPerPage, totalItems, paginate, currentPage, setCurrentPage }) => {
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
+
   const handleNext = () => {
     if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
   };
+
   const handlePrevious = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
   };
+
   return (
     <nav className="flex justify-center mt-4">
       <ul className="flex space-x-2">
@@ -172,8 +177,5 @@ const Pagination: React.FC<{
     </nav>
   );
 };
-export default UserManagement;
-const formatToTwoDecimals = (number: number): string => {
-  if (isNaN(number)) return "0.00";
-  return number.toFixed(2);
-}
+
+export default AchievementManagement;

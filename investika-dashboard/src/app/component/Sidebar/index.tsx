@@ -7,7 +7,7 @@ import { CiBank } from "react-icons/ci";
 import { FaPiggyBank } from "react-icons/fa";
 
 type SidebarItemProps = {
-  Icon: React.ElementType;  
+  Icon: React.ElementType;
   label: string;
   path: string;
 };
@@ -15,24 +15,33 @@ type SidebarItemProps = {
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
-
-  // State to force component rendering on client-side after initial load
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // Set default path to "/user-tracking" if the current pathname is "/"
     if (pathname === '/') {
       router.push('/homepage');
     }
   }, [pathname, router]);
 
+  const handleNavigation = async (path: string) => {
+    if (!loading && pathname !== path) {
+      setLoading(true); // Start loading
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Delay for 500 ms
+      router.push(path); // Navigate
+    }
+  };
+
   const SidebarItem: React.FC<SidebarItemProps> = ({ Icon, label, path }) => {
     const isActive = pathname === path;
     return (
       <li
-        onClick={() => router.push(path)}
-        className={`flex items-center p-2 rounded-lg cursor-pointer ${isActive ? 'text-[#F8BD00]' : 'text-white hover:text-[#F8BD00] transition-colors duration-200'}`}
+        onClick={() => handleNavigation(path)}
+        className={`flex items-center p-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out ${
+          isActive ? 'text-[#F8BD00]' : 'text-white hover:text-[#F8BD00]'
+        } ${loading && 'pointer-events-none'}`}
+        style={{ opacity: loading ? 0.5 : 1 }} 
       >
         <Icon className="mr-4 text-2xl" />
         <span className="text-lg font-bold">{label}</span>
@@ -40,7 +49,7 @@ const Sidebar = () => {
     );
   };
 
-  if (!mounted) return null; // Prevents rendering until the component is mounted
+  if (!mounted) return null;
 
   return (
     <div className="w-72 h-screen bg-[#00265B] text-white p-5 fixed flex flex-col justify-between">
@@ -61,6 +70,15 @@ const Sidebar = () => {
           </ul>
         </nav>
       </div>
+    
+      {loading && (
+        <div
+          className="absolute top-0 left-0 w-full h-full flex items-center justify-center transition-opacity duration-300 ease-in-out"
+          style={{ opacity: loading ? 1 : 0 }} // Maintain visibility of loading overlay
+        >
+          <p className="text-white">Loading...</p>
+        </div>
+      )}
     </div>
   );
 };

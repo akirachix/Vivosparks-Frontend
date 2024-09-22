@@ -6,7 +6,7 @@ import { useVirtualMoney } from 'a/app/hooks/useVirtualMoney';
 import { useEffect, useState } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import Layout from '../components/Layout';
+import Layout from '../component/Layout';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -36,16 +36,26 @@ interface InfoCardProps {
   error?: string;
 }
 
+// Define the structure of heatmap data
+interface HeatmapData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string;
+  }[];
+}
+
 const MarketsPage = () => {
-  const { markets, loading } = useMarkets() as { markets: Market[]; loading: boolean };
+  const { markets, loading: loadingMarkets } = useMarkets() as { markets: Market[]; loading: boolean };
   const { users, loading: loadingUsers, error: errorUsers } = useUsers() as unknown as { users: User[]; loading: boolean; error?: string };
   const { simulations, loading: loadingSimulations, error: errorSimulations } = useSimulations() as { simulations: Simulation[]; loading: boolean; error?: string };
   const { virtualMoney, loading: loadingMoney, error: errorMoney } = useVirtualMoney() as { virtualMoney: VirtualMoney[]; loading: boolean; error?: string };
 
-  const [heatmapData, setHeatmapData] = useState<any>(null);
+  const [heatmapData, setHeatmapData] = useState<HeatmapData | null>(null);
 
   useEffect(() => {
-    if (!loading && markets.length > 0) {
+    if (!loadingMarkets && markets.length > 0) {
       const labels = ['Low', 'Medium', 'High'];
       const frequencyData = [0, 0, 0];
 
@@ -68,7 +78,7 @@ const MarketsPage = () => {
         ],
       });
     }
-  }, [markets, loading]);
+  }, [markets, loadingMarkets]);
 
   const calculateTotalVirtualMoney = (virtualMoneyArray: VirtualMoney[]): number => {
     return virtualMoneyArray.reduce((total, item) => {
@@ -91,7 +101,7 @@ const MarketsPage = () => {
     </div>
   );
 
-  if (loading || loadingUsers || loadingSimulations || loadingMoney) return <p className="text-center text-gray-500">Loading...</p>;
+  if (loadingMarkets || loadingUsers || loadingSimulations || loadingMoney) return <p className="text-center text-gray-500">Loading...</p>;
 
   return (
     <Layout>
@@ -117,7 +127,7 @@ const MarketsPage = () => {
           />
         </div>
 
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Actions Users Risk Preferences</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center pl-12">Actions Users Risk Preferences</h2>
 
         <div className="w-full max-w-6xl h-full bg-white shadow-md rounded-lg p-8">
           {heatmapData ? (

@@ -7,14 +7,16 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { FaLock, FaUser } from 'react-icons/fa';
 import { userLogin } from '../../../utils/userLogin';
+import { useRouter } from 'next/navigation'; 
 
-// Validation schema
+
 const loginSchema = yup.object().shape({
   username: yup.string().required('Username is required'),
   password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
 });
 
 const Login = () => {
+  const router = useRouter();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(loginSchema),
   });
@@ -28,13 +30,14 @@ const Login = () => {
       const { error } = await userLogin(loginData);
 
       if (error) {
-        
         setErrorMessage(error);
         setSuccessMessage('');
       } else {
-        
         setSuccessMessage('Login successful!');
         setErrorMessage('');
+        
+   
+        router.push('/user-tracking');
       }
     } catch (error) {
       setErrorMessage('An error occurred. Please try again later.');
@@ -45,7 +48,7 @@ const Login = () => {
   return (
     <div className="flex h-screen">
       <div className="bg-white w-1/2 flex flex-col items-center justify-center">
-      <Image src="/image/logo.png" alt="Investika Logo" width={500} height={300} className="w-4/5 h-auto" />
+        <Image src="/images/logo.png" alt="Investika Logo" width={500} height={300} className="w-4/5 h-auto" />
         <p className="text-black text-xl text-center mb-64">
           Empowering Your Financial Journey<br />
           Financial learning through investment simulations.
@@ -96,3 +99,4 @@ const Login = () => {
 };
 
 export default Login;
+

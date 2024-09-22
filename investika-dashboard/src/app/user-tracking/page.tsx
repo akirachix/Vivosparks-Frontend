@@ -1,9 +1,11 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+
 import { CombinedUser, useUsers } from 'a/app/hooks/useUsers';
 import { useSimulations } from 'a/app/hooks/useSimulation';
 import { useVirtualMoney } from 'a/app/hooks/useVirtualMoney';
 import Layout from '../component/Layout';
+import { useState } from 'react';
+
 const UserManagement: React.FC = () => {
   const { virtualMoney, loading: loadingMoney, error: errorMoney } = useVirtualMoney();
   const { users, loading: loadingUsers, error: errorUsers } = useUsers();

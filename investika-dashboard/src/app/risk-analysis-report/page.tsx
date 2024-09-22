@@ -1,15 +1,16 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react'; // Removed useEffect
 import { useAchievements } from 'a/app/hooks/useAchievements';
 import { useUsers } from 'a/app/hooks/useUsers';
 import { useSimulations } from 'a/app/hooks/useSimulation';
-import { Achievements } from '../../../utils/fetchAchievement';
 import Layout from '../component/Layout';
+import { Achievements } from '../../../utils/fetchAchievement';
 
 const AchievementManagement: React.FC = () => {
   const { achievements, loading: loadingAchievements, error: errorAchievements } = useAchievements();
   const { users, loading: loadingUsers, error: errorUsers } = useUsers();
   const { simulations, loading: loadingSimulations, error: errorSimulations } = useSimulations();
+  
   const [currentPage, setCurrentPage] = useState(1);
   const achievementsPerPage = 10;
 
